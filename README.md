@@ -1,7 +1,7 @@
 # USCIS Hippo
 
 USCIS Hippo is a small project started to solve a small repetitive task.
-The app has usefulness if you are tired of checking [USCIS processing] times (https://egov.uscis.gov/processing-times/)
+The app has usefulness if you are tired of checking [USCIS processing times](https://egov.uscis.gov/processing-times/)
 
 
 ## Building the Sample App
@@ -45,5 +45,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Icon used a combination of these images from [pixabay](https://pixabay.com):
-** [Hippo](https://pixabay.com/vectors/hippo-head-cartoon-cute-grey-zoo-308772/)
-** [US Flag](https://pixabay.com/vectors/flag-usa-america-american-united-32195/)
+ * [Hippo](https://pixabay.com/vectors/hippo-head-cartoon-cute-grey-zoo-308772/)
+ * [US Flag](https://pixabay.com/vectors/flag-usa-america-american-united-32195/)
