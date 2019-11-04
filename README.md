@@ -8,7 +8,7 @@ The app has usefulness if you are tired of checking [USCIS processing times](htt
 
 First, clone the repo:
 
-`https://github.com/matthewpkemp/USCISHippo.git`
+`git clone https://github.com/matthewpkemp/USCISHippo.git`
 
 ### Android Studio (Recommended)
 
@@ -45,5 +45,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Icon used a combination of these images from [pixabay](https://pixabay.com):
- * [Hippo](https://pixabay.com/vectors/hippo-head-cartoon-cute-grey-zoo-308772/)
- * [US Flag](https://pixabay.com/vectors/flag-usa-america-american-united-32195/)
+  * [Hippo](https://pixabay.com/vectors/hippo-head-cartoon-cute-grey-zoo-308772/)
+  * [US Flag](https://pixabay.com/vectors/flag-usa-america-american-united-32195/)
