@@ -1,12 +1,19 @@
 package com.nuclearsunrise.uscishippo
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.nuclearsunrise.uscishippo.apiutils.APIhandler
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,8 +23,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            callAPItest(this.cacheDir)
         }
     }
 
@@ -34,6 +40,24 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun callAPItest(cDir: File)
+    {
+        GlobalScope.launch(Dispatchers.Main)
+        {
+            val response = APIhandler(cDir).apiInterface.getFormsAsync().await()
+            if (response.isSuccessful)
+            {
+                Log.d("MainActivity", response.body()?.message)
+                maintextview.setText(response.body()?.message)
+            }
+            else
+            {
+                Log.d("MainActivity", "failure")
+                maintextview.setText("failed")
+            }
         }
     }
 }
