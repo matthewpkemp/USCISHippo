@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener { xview ->
             callAPItest(this.cacheDir)
         }
     }
@@ -46,25 +48,54 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun callAPItest(cDir: File)
-    {
-        GlobalScope.launch(Dispatchers.Main)
+    private fun setMainText(textString: String) {
+        maintextview.setText(textString)
+    }
+
+    private fun callAPItest(cDir: File) {
+
+
+        GlobalScope.launch(Dispatchers.IO)
         {
-            if (Networkutils(this@MainActivity).isNetworkConnected()) {
-                val response = APIhandler(cDir).apiInterface.getFormsAsync().await()
-                if (response.isSuccessful) {
-                    Log.d("MainActivity", response.body()?.message)
-                    maintextview.setText(response.body()?.message)
-                } else {
-                    Log.d("MainActivity", "failure")
-                    maintextview.setText("failed")
-                }
-            }
-            else
-            {
-                Log.d("MainActivity", "No Network")
-                maintextview.setText("No Network")
-            }
+         try {
+             val response = APIhandler(cDir).apiInterface.getFormsAsync().await()
+             if (response.isSuccessful) {
+                 Log.d("MainActivity", response.body()?.message)
+                 val returnString = response.body()?.message
+                 if (returnString is String) {
+                     withContext(Dispatchers.Main)
+                     {
+                         setMainText(returnString as String)
+                     }
+                 } else {
+                     withContext(Dispatchers.Main)
+                     {
+                         setMainText("Something failed")
+                     }
+                 }
+             } else {
+                 Log.d("MainActivity", "failure")
+                 withContext(Dispatchers.Main)
+                 {
+                     setMainText("failed")
+                 }
+             }
+         } catch (e: HttpException)
+         {
+             Log.d("MainActiivty", "Error: ${e.message}")
+             withContext(Dispatchers.Main)
+             {
+                 setMainText("failed")
+             }
+         } catch (e: Throwable)
+         {
+             Log.d("MainActiivty", "Error: ${e.message}")
+             withContext(Dispatchers.Main)
+             {
+                 setMainText("failed")
+             }
+
+         }
         }
     }
 }
