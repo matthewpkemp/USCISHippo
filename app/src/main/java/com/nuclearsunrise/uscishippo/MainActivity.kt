@@ -25,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        netMon = NetworkMonitor(this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val cm : ConnectivityManager = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        netMon = NetworkMonitor(cm)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
@@ -41,7 +42,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        netMon = NetworkMonitor(this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
+        val cm : ConnectivityManager = this@MainActivity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        netMon = NetworkMonitor(cm)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -69,10 +71,8 @@ class MainActivity : AppCompatActivity() {
 
         GlobalScope.launch(Dispatchers.IO)
         {
-            if (netMon.getStatus()) {
-                //connected to network
                 try {
-                    val response = APIhandler(cDir).apiInterface.getFormsAsync().await()
+                    val response = APIhandler(cDir, netMon.getStatus()).apiInterface.getFormsAsync().await()
                     if (response.isSuccessful) {
                         Log.d("MainActivity", response.body()?.message)
                         val returnString = response.body()?.message
@@ -108,14 +108,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                 }
-            }
-            else
-            {
-                withContext(Dispatchers.Main)
-                {
-                    setMainText("No Network")
-                }
-            }
+
 
         }
     }

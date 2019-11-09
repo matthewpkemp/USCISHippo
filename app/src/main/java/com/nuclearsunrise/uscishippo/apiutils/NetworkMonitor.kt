@@ -8,11 +8,6 @@ class NetworkMonitor(private val connectivityManager: ConnectivityManager ) {
 
     private var isConnected: Boolean = false
 
-    init
-    {
-        this.startListener(callbackFun)
-    }
-
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
             super.onAvailable(network)
@@ -24,6 +19,12 @@ class NetworkMonitor(private val connectivityManager: ConnectivityManager ) {
             callbackFun(false)
         }
     }
+
+    init
+    {
+        this.startListener(callbackFun)
+    }
+
 
     private fun startListener(callback: (Boolean) -> Unit) {
         callbackFun = callback
